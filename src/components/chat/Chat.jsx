@@ -2,16 +2,15 @@ import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
 import { useEffect, useRef, useState } from "react";
 import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "../../lib/firebase";
-import { useChatStore } from "../../lib/chatStore";
-import { useUserStore } from "../../lib/userStore";
-import upload from "../../lib/upload";
+
+import { upload,db,useChatStore,useUserStore } from "../../lib";
 
 function Chat() {
-    const [open, setOpen] = useState(false);
-    const [text, setText] = useState("");
+    const [open, setOpen] = useState(false); // To keep track of emoji eomji component open or not
+    const [text, setText] = useState(""); // Text to send
     const [chat, setChat] = useState();
 
+    // For the image that user selects to send
     const [img, setImg] = useState({
         file: null,
         url: "",
@@ -22,6 +21,7 @@ function Chat() {
 
     const endRef = useRef(null);
 
+    // Scroll to last message when loading for first time
     useEffect(() => {
         endRef.current.scrollIntoView({ behavior: "smooth" });
     }, []);
@@ -35,12 +35,14 @@ function Chat() {
 
     //console.log(chat);
 
+    // It runs when user selects an emoji
     const handleEmoji = (e) => {
         setText((prev) => prev + e.emoji);
         setOpen(false);
     };
 
 
+    // It runs when user selects an image to send
     const handleImg = (e) => {
         if (e.target.files[0]) {
 
@@ -51,15 +53,19 @@ function Chat() {
         }
     }
 
+
+    // It runs when user press send button
     const handleSend = async () => {
-        if (text === "") return;
+        if (text === "") return; // Text is null --> Do nothing
 
         let imgUrl = null;
 
         try {
             if (img.file) {
+                // When user selects an img --> Upload it on Storage
                 imgUrl = await upload(img.file);
             }
+            // Update the message on database
             await updateDoc(doc(db, "chats", chatId), {
                 messages: arrayUnion({
                     senderId: currentUser.id,
@@ -71,9 +77,10 @@ function Chat() {
 
             const userIds = [currentUser.id, user.id];
 
+            // To update the lastMessage, seen, updatedAt
             userIds.forEach(async (id) => {
 
-                const userChatRef = doc(db, "userchats", id);
+                const userChatRef = doc(db, "userchats", id); // Reference of document
                 const userChatSnapshot = await getDoc(userChatRef);
 
                 if (userChatSnapshot.exists()) {
@@ -96,6 +103,7 @@ function Chat() {
             console.log(error);
         }
 
+        // Set the img and text as nul
         setImg({
             file: null,
             url: "",
@@ -107,7 +115,7 @@ function Chat() {
         <div className="chat">
             <div className="top">
                 <div className="user">
-                    <img src="./avatar.png" alt="" />
+                    <img src={user.avatar || "./avatar.png"} alt="" />
                     <div className="text">
                         <span>JAne Doe</span>
                         <p>Lorem ipsum dolor sit, amet</p>
@@ -141,6 +149,7 @@ function Chat() {
                 </div>}
                 <div ref={endRef}></div>
             </div>
+
 
 
             <div className="bottom">
