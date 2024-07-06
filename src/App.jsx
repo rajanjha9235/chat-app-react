@@ -1,18 +1,12 @@
 import { useEffect } from "react";
-import Chat from "./components/chat/Chat"
-import Detail from "./components/detail/Detail"
-import List from "./components/list/List"
-import Login from "./components/login/Login";
-import Notification from "./components/notification/Notification";
+import { Chat,Detail,List,Login,Notification } from "./components";
+
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./lib/firebase";
-import { useUserStore } from "./lib/userStore";
-import { useChatStore } from "./lib/chatStore";
+import { auth,useChatStore,useUserStore } from "./lib";
 
 function App() {
-  const user = false;
 
-  const {currentUser,isLoading,fetchUserInfo } = useUserStore();
+  const {currentUser,isLoading,fetchUserInfo } = useUserStore(); // Get the user information from the store
   const {chatId} = useChatStore();
 
   useEffect(()=> {
@@ -24,22 +18,22 @@ function App() {
 
   console.log(currentUser);
 
-  if(isLoading) return <div className="loading">Loading...</div>
+  if(isLoading) return <div className="loading">Loading...</div>  // Show Loading
   
   return (
     <div className="container">
       {
-        currentUser ? (
+        currentUser ? ( 
           <>
             <List />
             {chatId && <Chat />}
             {chatId && <Detail />}
           </>
-        ) : (
+        ) : ( 
           <Login />
         )
       }
-      <Notification />
+      <Notification /> 
     </div>
   )
 }
