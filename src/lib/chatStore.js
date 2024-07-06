@@ -1,13 +1,14 @@
-import { doc, getDoc } from "firebase/firestore";
-import { create } from "zustand";
-import { db } from "./firebase";
-import { useUserStore } from "./userStore";
+// Global state Management store for Chats
+
+import { create } from "zustand"; // Global State Management
+import {useUserStore} from "./index";
 
 export const useChatStore = create((set) => ({
     chatId: null,
     user: null,
-    isCurrentUserBloacked: false,
+    isCurrentUserBlocked: false,
     isReceiverBlocked: false,
+    
     changeChat: (chatId, user) => {
         const currentUser = useUserStore.getState().currentUser;
 
@@ -16,7 +17,7 @@ export const useChatStore = create((set) => ({
             return set({
                 chatId,
                 user: null,
-                isCurrentUserBloacked: true,
+                isCurrentUserBlocked: true,
                 isReceiverBlocked: false,
             })
         }
@@ -25,7 +26,7 @@ export const useChatStore = create((set) => ({
             return set({
                 chatId,
                 user: null,
-                isCurrentUserBloacked: false,
+                isCurrentUserBlocked: false,
                 isReceiverBlocked: true,
             })
         }
@@ -33,7 +34,7 @@ export const useChatStore = create((set) => ({
             return set({
                 chatId,
                 user,
-                isCurrentUserBloacked: false,
+                isCurrentUserBlocked: false,
                 isReceiverBlocked: false,
             })
         }

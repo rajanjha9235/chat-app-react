@@ -1,6 +1,5 @@
-import ChatList from "./chatList/chatList";
 import "./list.css"
-import UserInfo from "./userInfo/UserInfo";
+import {ChatList,UserInfo} from "../index";
 
 function List(){
 

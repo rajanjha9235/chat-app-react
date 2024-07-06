@@ -1,16 +1,16 @@
 import { useState } from "react"
 import "./login.css"
-import { toast } from "react-toastify"
+import { toast } from "react-toastify" // For the notification
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
-import { auth,db } from "../../lib/firebase"
 import { setDoc,doc } from "firebase/firestore"
-import upload from "../../lib/upload"
+import { auth,db, upload } from "../../lib";
 
 export default function Login() {
+    // When user uploads an image for Sign Up
     const [avatar,setAvatar] = useState({
         file: null,
         url : ""
-    })
+    });
 
     const [loading,setLoading] = useState(false);
 
@@ -30,7 +30,7 @@ export default function Login() {
         setLoading(true);
 
         const formData = new FormData(e.target);
-        const {email,password} = Object.fromEntries(formData);
+        const {email,password} = Object.fromEntries(formData); // From the form
 
         try{
             await signInWithEmailAndPassword(auth,email,password);
@@ -50,7 +50,6 @@ export default function Login() {
         const formData = new FormData(e.target);
 
         const {username,email,password} = Object.fromEntries(formData);
-        console.log(username);
 
         try{
             const res = await createUserWithEmailAndPassword(auth,email,password);

@@ -1,8 +1,9 @@
 import "./userinfo.css";
-import { useUserStore } from "../../../lib/userStore";
+import { useUserStore } from "../../../lib";
 
 function UserInfo(){
     const {currentUser } = useUserStore();
+    
     return(
         <div className="userinfo">
             <div className="user">

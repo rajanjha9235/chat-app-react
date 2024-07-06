@@ -1,22 +1,23 @@
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { useChatStore } from "../../lib/chatStore";
-import { auth, db } from "../../lib/firebase";
-import { useUserStore } from "../../lib/userStore";
+import {auth,useChatStore,useUserStore,db} from "../../lib";
 import "./detail.css"
+
 function Detail(){
     const {currentUser} = useUserStore();
-    const {chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock} = useChatStore();
+    const { user, isCurrentUserBlocked, isReceiverBlocked, changeBlock} = useChatStore();
 
+    // It runs when clicked on Block button
     const handleBlock = async() => {
         if (!user) return;
 
-        const userDocRef = doc(db,"users",currentUser.id);
+        const userDocRef = doc(db,"users",currentUser.id); // Reference of this user
 
         try {
+            // If it's blocked --> UnBlock it or  if not blocked --> Block it
             await updateDoc(userDocRef,{
                 blocked : isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
             });
-            changeBlock();
+            changeBlock();  // Update the block status on store
         } catch (error) {
             console.log(error);
         }
