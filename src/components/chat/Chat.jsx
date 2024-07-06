@@ -117,7 +117,7 @@ function Chat() {
                 <div className="user">
                     <img src={user.avatar || "./avatar.png"} alt="" />
                     <div className="text">
-                        <span>JAne Doe</span>
+                        <span>{user.username}</span>
                         <p>Lorem ipsum dolor sit, amet</p>
                     </div>
                 </div>
