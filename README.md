@@ -17,6 +17,10 @@ This is a real-time chat application built using React, Firebase, react-toastify
   - Firebase Authentication: For user authentication.
 - **react-toastify**: For providing notifications.
 - **Zustand**: A small, fast, and scalable bearbones state-management solution.
+# Screenshots
+1. First Page of the app where users can Login to their existing account. They can sign Up also with new Account.
+   
+![image](https://github.com/user-attachments/assets/58585b29-0bc0-4072-9397-da0ec1c6dfac)
 
 ## Installation
 
